@@ -5,6 +5,11 @@
       <div slot="center" class="center">购物街</div>
     </nav-bar>
     <!-- 头部end -->
+    <!-- 详情模块1 -->
+    <tab-contorl :titles="['流行','新款','精选']" @tabCtlclick="tabCtlclick" v-show="tabcontorlshow"
+    class="hdtab-contorl"
+    ref="tabcontorl1"/>
+    <!-- 详情模块2 -->
     <bscroll class="content"
      :style="{height: height}" 
      ref="scroll" 
@@ -13,14 +18,16 @@
      :pulling-load="true"
      @pullingUp="Load">
      <!-- 轮播图start -->
-    <home-swiper :banners="banners"/>
+    <home-swiper :banners="banners" @swiperonload="swiperonload"/>
     <!-- 轮播图end -->
     <!-- 推荐模块start -->
     <recommed-view :recommends="recommends"/>
     <!-- 推荐模块end -->
-    <!-- 详情模块start: 这里v-bind传递的是数组，不用:的话传递的是字符串-->
-    <tab-contorl :titles="['流行','新款','精选']" @tabCtlclick="tabCtlclick"/>
-    <!-- 详情模块end -->
+    <!-- 详情模块2start: 这里v-bind传递的是数组，不用:的话传递的是字符串-->
+    <tab-contorl :titles="['流行','新款','精选']" @tabCtlclick="tabCtlclick"
+    ref="tabcontorl2"
+    v-show="!tabcontorlshow"/>
+    <!-- 详情模块2end -->
     <!-- 商品模块start -->
     <goods-list :goods="showshop"/>
     <!-- 商品模块end -->
@@ -52,7 +59,10 @@ export default {
         sell: {page: 0, list: [] }
       },
       counttype: 'pop',
-      isShow: true
+      isShow: true,
+      tabcontorlshow: false,
+      swipertop: 0,
+      swiperY: 0
     };
   },
   components: {
@@ -81,6 +91,17 @@ export default {
       refresh();
     })
   },
+  //进入组件生命周期函数
+  activated(){
+    //将离开首页时候的scroll.y赋值给进入组件后的scroll.y
+    this.$refs.scroll.scrollTo(0,this.swiperY,0);
+    //这里应该再次刷新一次scrollheight。否则有bug：自动滚动到顶部。
+    this.$refs.scroll.refresh();
+  },
+  //离开组件生命周期函数
+  deactivated(){
+    this.swiperY = this.$refs.scroll.swiperY();
+  },
   computed:{
     showshop(){
       return this.goods[this.counttype].list;
@@ -91,6 +112,10 @@ export default {
     }
   },
   methods: {
+    //swiper加载完毕
+    swiperonload(){
+      this.swipertop = this.$refs.tabcontorl2.$el.offsetTop;
+    },
     //下拉加载更多
     Load(){
       this.getHomeGoods(this.counttype);
@@ -103,6 +128,7 @@ export default {
     //显示/隐藏返回顶部按钮
     backscroll(position){
       this.isShow = Math.abs(position.y) > 1000;
+      this.tabcontorlshow = Math.abs(position.y) > this.swipertop-44
     },
     //监听事件tabCtlclick
     tabCtlclick(index){
@@ -117,7 +143,8 @@ export default {
           this.counttype = 'sell';
           break;
       }
-      
+      this.$refs.tabcontorl1.countindex = index;
+      this.$refs.tabcontorl2.countindex = index;
     },
     //网络请求
     getHomeMultidata() {
@@ -142,18 +169,12 @@ export default {
 
 <style scoped>
 .navbar {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
   background-color: #ff8198;
-  z-index: 999;
 }
 .navbar .center {
   text-align: center;
 }
 .content{
   overflow: hidden;
-  margin-top: 44px;
 }
 </style>

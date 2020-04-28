@@ -42,6 +42,10 @@ methods:{
   //返回顶部
   scrollTo(x, y, time = 700){
     this.bscroll && this.bscroll.scrollTo(x,y,time); 
+  },
+  //计算被卷去头部的距离
+  swiperY(){
+    return this.bscroll ? this.bscroll.y : 0;
   }
 },
 mounted(){

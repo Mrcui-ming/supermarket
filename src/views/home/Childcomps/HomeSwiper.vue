@@ -2,7 +2,7 @@
   <swiper>
       <swiper-item v-for="(item,index) in banners" :key="index">
         <a :href="item.link">
-          <img :src="item.image">
+          <img :src="item.image" @load="swiperonload">
         </a>
       </swiper-item>
     </swiper>
@@ -12,6 +12,11 @@
 import {Swiper,SwiperItem} from 'components/common/swiper/index.js'
 export default {
  name: 'HomeSwiper',
+ data(){
+     return{
+       countemit: false
+     }
+   },
  components:{
    Swiper,
    SwiperItem
@@ -21,6 +26,14 @@ export default {
      type: Array,
      default(){
        return []
+     }
+   }
+ },
+ methods:{
+   swiperonload(){
+     if(!this.countemit){
+       this.$emit('swiperonload');
+       this.countemit = true;
      }
    }
  }

@@ -17,6 +17,7 @@ export default {
   display: flex;
   height: 44px;
   line-height: 44px;
+  background-color: #fff;
 }
 .left,
 .right{

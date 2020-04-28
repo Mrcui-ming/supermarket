@@ -35,10 +35,8 @@ name: 'TabContorl',
 
 <style>
 .tabcontorl{
-  position: sticky;
   display: flex;
   background-color: #fff;
-  top: 44px;
 }
 .tabcontorl-item{
   flex: 1;

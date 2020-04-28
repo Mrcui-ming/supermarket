@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <!-- 离开后路由对应的组件后不进行销毁，但是排除Detail这个组件 -->
+    <keep-alive exclude="Detail">
+      <router-view></router-view>
+    </keep-alive>
     <main-tab-bar></main-tab-bar>
   </div>
 </template>
