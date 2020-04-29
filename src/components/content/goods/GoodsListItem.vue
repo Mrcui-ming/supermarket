@@ -1,6 +1,6 @@
 <template>
   <div class="goodlist-item" @click="itemClick">
-    <div class="imgbox"><img :src="goodsitem.show.img" alt="" @load="itemimgLoad"></div>
+    <div class="imgbox"><img :src="showimg" alt="" @load="itemimgLoad"></div>
     <div class="item-info">
       <p>{{goodsitem.title}}</p>
       <span class="price">{{'￥'+goodsitem.price}}</span>
@@ -24,12 +24,19 @@ props:{
 methods:{
   itemimgLoad(){
     //利用事件总线发送了一个事件。
-    this.$bus.$emit('itemimgLoad')  
+    this.$bus.$emit('itemimgLoad');  
   },
   itemClick(){
     this.$router.push('/detail/'+ this.goodsitem.iid)
   }
-}
+},
+  computed:{
+    showimg(){
+      //这里主要: 不能从一个存在的对象里面调用不存在的属性的子属性会报错
+      //做了一层判断 返回这俩个属性中，从前往后找存在的一个属性
+      return this.goodsitem.image || this.goodsitem.show.img;
+    }
+  }
 }
 </script>
 

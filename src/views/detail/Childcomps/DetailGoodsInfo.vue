@@ -8,7 +8,6 @@
     <div class="goodsinfoimgs">
       <img :src="item" v-for="(item,index) in goodsinfos.detailImage[0].list" :key="index" @load="goodsImgsLoad">
     </div>
-    
   </div>
 </template>
 
@@ -36,10 +35,7 @@ export default {
   methods:{
     goodsImgsLoad(){
       //每次img加载完countimgs++，当countimgs的个数===需要加载图片的个数，传递信息。
-      this.countimgs++;
-      if(this.countimgs === this.goodsinfos.detailImage[0].list.length){
         this.$emit('goodsImgsLoad');
-      }
     }
   }
 }

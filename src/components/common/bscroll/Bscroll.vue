@@ -30,14 +30,12 @@ data(){
 methods:{
   //可以用这个方法来做下来刷新。2s内不可重复刷新
   finishPullUp(){
-   setTimeout(() => {
     this.bscroll && this.bscroll.finishPullUp();
-   },2000)
   },
   //对bscroll.scrollHeight做一次刷新。因为默认可滑动区域是没有合计图片的高度.
   refresh(){
     //逻辑与先判断有没有BScroll实例对象
-    this.bscroll && this.bscroll.refresh();
+    this.bscroll && this.bscroll.refresh();    
   },
   //返回顶部
   scrollTo(x, y, time = 700){

@@ -42,8 +42,10 @@ export default {
 
 <style>
 .detailcomment{
-   padding: 0 10px;
-   height: 2000px;
+  padding: 0 10px;
+  border-bottom: 5px solid #f2f5f8;
+  padding-bottom: 20px;
+  margin-bottom: 5px;
 }
 .comment-user{
   width: 100%;

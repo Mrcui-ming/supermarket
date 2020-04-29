@@ -29,6 +29,7 @@ export default {
   methods:{
     centerbarClick(index){
       this.countindex = index;
+      this.$emit('navBarOnclick',index)
     },
     leftbarClick(){
       //后退一栈

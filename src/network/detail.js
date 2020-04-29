@@ -1,10 +1,16 @@
-import {requestone} from './requset';
+import {requestone, request} from './requset';
 export function getDetail(iid) {
   return requestone({
    url: '/detail',
    params:{
      iid
    }
+  })
+}
+
+export function getRecommend(){
+  return requestone({
+    url: '/recommend'
   })
 }
 //公司给的数据很负责，先把请求的数据做一次整合。然后页面面象这个对象取值/编程

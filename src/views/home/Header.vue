@@ -47,6 +47,7 @@ import BackTop from 'components/content/backtop/BackTop.vue';
 
 import { getHomeMultidata, getHomeGoods } from "network/header.js";
 import {debounce} from 'common/utils.js'
+import {itemimgmixins,backtopmixins} from 'common/mixins.js'
 export default {
   name: "Header",
   data() {
@@ -59,20 +60,19 @@ export default {
         sell: {page: 0, list: [] }
       },
       counttype: 'pop',
-      isShow: true,
       tabcontorlshow: false,
       swipertop: 0,
       swiperY: 0
     };
   },
+  mixins:[itemimgmixins,backtopmixins],
   components: {
     NavBar,
     HomeSwiper,
     RecommedView,
     TabContorl,
     GoodsList,
-    Bscroll,
-    BackTop
+    Bscroll
   },
   //组件创建完成发送请求。
   created() {
@@ -83,24 +83,21 @@ export default {
     this.getHomeGoods('new');
     this.getHomeGoods('sell');  
   },
-  mounted(){  
-    //利用闭包扩大了作用域 对refresh函数做一次防抖处理
-    const refresh = debounce(this.$refs.scroll.refresh,20);
-    this.$bus.$on('itemimgLoad',() => {
-      //对scroll.Height进行刷新
-      refresh();
-    })
+  mounted(){
+    this.tabCtlclick(0);
   },
   //进入组件生命周期函数
   activated(){
-    //将离开首页时候的scroll.y赋值给进入组件后的scroll.y
-    this.$refs.scroll.scrollTo(0,this.swiperY,0);
     //这里应该再次刷新一次scrollheight。否则有bug：自动滚动到顶部。
     this.$refs.scroll.refresh();
+    //将离开首页时候的scroll.y赋值给进入组件后的scroll.y
+    this.$refs.scroll.scrollTo(0,this.swiperY,0);
   },
   //离开组件生命周期函数
   deactivated(){
     this.swiperY = this.$refs.scroll.swiperY();
+    //取消全局事件的监听： 离开这个组件自然就不需要监听了
+    this.$bus.$off('itemimgLoad',this.imgLoadHandle)
   },
   computed:{
     showshop(){
@@ -119,11 +116,6 @@ export default {
     //下拉加载更多
     Load(){
       this.getHomeGoods(this.counttype);
-    },
-    //返回顶部
-    backtopclick(){
-      //new BScroll的实例对象.scrollTo(x,y,ms) 可以实现快速到达顶部
-     this.$refs.scroll.scrollTo(0,0);
     },
     //显示/隐藏返回顶部按钮
     backscroll(position){
