@@ -16,6 +16,7 @@ export function getRecommend(){
 //公司给的数据很负责，先把请求的数据做一次整合。然后页面面象这个对象取值/编程
 export class Goods{
   constructor(itemInfo,columns,services){
+    this.desc = itemInfo.desc;
     this.title = itemInfo.title;
     this.nowprice = itemInfo.price;
     this.oldprice = itemInfo.oldPrice;
@@ -48,5 +49,12 @@ export class GoodsParam{
   }
 }
 
-//获取评论信息数据
-//export class 
+//获取库存/尺码数据
+export class Stock{
+  constructor(skuInfo,itemInfo){
+    this.styleinfo = skuInfo.props[0].list;
+    this.sizeinfo = skuInfo.props[1].list;
+    this.stock = skuInfo.skus[0].stock;
+    this.price = itemInfo.lowNowPrice;
+  }
+}

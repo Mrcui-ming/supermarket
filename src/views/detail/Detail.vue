@@ -27,8 +27,21 @@
     <!-- goodslist -->
     <!--  -->
     </bscroll>
+    <!-- 返回顶部按钮 start -->
     <back-top class="detail-backtop" @click.native="backtopclick" v-show="isShow"></back-top>
-    <detail-shop-car></detail-shop-car>
+    <!-- 返回顶部 end -->
+    <!-- 购物车工具栏  start-->
+    <detail-shop-car @addShopCar="addShopCar"></detail-shop-car>
+    <!-- 购物车工具栏  end -->
+    <!-- 遮挡层 start -->
+    <detail-guard :skuinfos="skuinfos" v-show="isshow" @btnClick="btnClick"></detail-guard>
+    <!-- 遮挡层 end -->
+    <!-- 完整遮挡层 start-->
+    <div class="opacity" v-show="isshow"></div>
+    <!-- 完整遮挡层 end -->
+    <!-- toasy  start-->
+    <Toast v-show="toshow">{{messages}}</Toast>
+    <!-- toast  end -->
   </div>
 </template>
 
@@ -42,11 +55,14 @@ import DetailGoodsInfo from './Childcomps/DetailGoodsInfo';
 import DetailParamInfo from './Childcomps/DetailParamInfo';
 import DetailCommentInfo from './Childcomps/DetailCommentInfo';
 import GoodsList from 'components/content/goods/GoodsList';
-import DetailShopCar from './Childcomps/DetailShopCar'
+import DetailShopCar from './Childcomps/DetailShopCar';
+import DetailGuard from './Childcomps/DetailGuard';
+import Toast from 'components/common/toast/Toast';
 
-import {getDetail,Goods,Shop,GoodsParam,getRecommend} from 'network/detail.js';
+import {getDetail,Goods,Shop,GoodsParam,getRecommend,Stock} from 'network/detail.js';
 import {debounce} from 'common/utils.js'
 import {itemimgmixins,backtopmixins} from 'common/mixins.js';
+import { mapActions } from 'vuex';
 export default {
   name: 'Detail',
   data(){
@@ -61,7 +77,11 @@ export default {
       recommedinfos: [],
       detailitemTopY: [],
       getDetailitemTopY: null,
-      countindex: 0
+      countindex: 0,
+      skuinfos:{},
+      isshow: false,
+      toshow: false,
+      messages: ''
     }
   },
   mixins: [itemimgmixins,backtopmixins],
@@ -75,11 +95,13 @@ export default {
     DetailParamInfo,
     DetailCommentInfo,
     GoodsList,
-    DetailShopCar
+    DetailShopCar,
+    DetailGuard,
+    Toast
   },
   created(){
     this.iid = this.$route.params.iid;  
-   getDetail(this.iid).then(res => {
+   getDetail(this.iid).then(res => { 
      const data = res.data.result;
      //获取轮播图数据
      this.topImages = data.itemInfo.topImages;
@@ -95,6 +117,8 @@ export default {
      if(data.rate.cRate !== 0){
        this.commentinfos = data.rate.list[0];
      }
+     //去除尺码库存数据
+     this.skuinfos = new Stock(data.skuInfo,data.itemInfo);
    });
    getRecommend().then(res => {
      const data = res.data.data;
@@ -113,6 +137,27 @@ export default {
   },
   mounted(){},
   methods:{
+    ...mapActions(['addCart']),
+    //淡出选项框
+    btnClick(infos){
+      this.isshow = false;
+      infos.iid = this.iid;
+      infos.title = this.goods.title;
+      infos.desc = this.goods.desc;
+      infos.image = this.topImages[0];   
+      this.addCart(infos).then(res => {
+      this.toshow = true;
+      this.messages = res;
+      setTimeout(() => {
+        this.toshow = false;
+        this.messages = '';
+      },2000)
+      })    
+    },
+    //弹出选项框
+    addShopCar(){
+      this.isshow = true;
+    },
     centerbarClick(index){
       this.countindex = index;
     },
@@ -156,7 +201,7 @@ export default {
 }
 .detail-bscroll{
   position: relative;
-  z-index: 999;
+  z-index: 1;
   background-color: #fff;
   overflow: hidden;
   /* Css3计算属性父盒子高度的100% - 44px */
@@ -164,5 +209,13 @@ export default {
 }
 .detail-backtop{
   z-index: 999;
+}
+.opacity{
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0,0,0,0.6);
 }
 </style>

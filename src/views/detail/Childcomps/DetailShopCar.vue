@@ -13,7 +13,7 @@
         <div class="shop-car-icon"></div>
        <span class="shoucang">收藏</span>
       </li>
-      <li>加入购物车</li>
+      <li @click="addshop">加入购物车</li>
       <li>购买</li>
     </ul>
   </div>
@@ -21,14 +21,19 @@
 
 <script>
 export default {
-  name: 'DetailShopCar'
+  name: 'DetailShopCar',
+  methods:{
+    addshop(){
+      this.$emit('addShopCar')
+    }
+  }
 }
 </script>
 
 <style>
 .detail-shop-car{
   position: relative;
-  z-index: 9;
+  z-index: 1;
   width: 100%;
   height: 49px;
   background-color: #fff;
