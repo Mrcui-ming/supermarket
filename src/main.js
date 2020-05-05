@@ -4,6 +4,10 @@ import router from './router';
 import store from './store';
 import toast from 'components/common/toast/index.js';
 
+//vue中的懒加载
+import lazyload from 'vue-lazyload';
+Vue.use(lazyload);
+
 //移动端300ms延迟解决方案
 import FastClick from 'fastclick';
 FastClick.attach(document.body);

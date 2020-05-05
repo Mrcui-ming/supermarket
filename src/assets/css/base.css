@@ -4,6 +4,9 @@
     margin: 0;
     padding: 0
 }
+.style-red{
+    color: red;
+}
 /* 引入字体图标 */
 @font-face {
     font-family: 'icomoon';

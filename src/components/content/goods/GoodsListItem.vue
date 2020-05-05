@@ -1,6 +1,6 @@
 <template>
   <div class="goodlist-item" @click="itemClick">
-    <div class="imgbox"><img :src="showimg" alt="" @load="itemimgLoad"></div>
+    <div class="imgbox"><img v-lazy="showimg" alt="" @load="itemimgLoad" class="goodlist-item-img"></div>
     <div class="item-info">
       <p>{{goodsitem.title}}</p>
       <span class="price">{{'￥'+goodsitem.price}}</span>
@@ -61,11 +61,14 @@ span{
   width: 48%;
 }
 .imgbox{
-  height: 250px;
-}
-.goodlist-item img{
   width: 100%;
-  height: 100%;
+  height: 250px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.goodlist-item-img{
+  width: 100%;
+  /* height: 100%; */
 }
 .item-info img{
   width: 1em;

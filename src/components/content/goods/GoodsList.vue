@@ -24,6 +24,7 @@ components:{
 
 <style>
 .goods-list{
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
