@@ -101,7 +101,7 @@ export default {
   },
   created(){
     this.iid = this.$route.params.iid;  
-   getDetail(this.iid).then(res => { 
+    getDetail(this.iid).then(res => { 
      const data = res.data.result;
      //获取轮播图数据
      this.topImages = data.itemInfo.topImages;
@@ -117,7 +117,7 @@ export default {
      if(data.rate.cRate !== 0){
        this.commentinfos = data.rate.list[0];
      }
-     //去除尺码库存数据
+     //取出尺码库存数据
      this.skuinfos = new Stock(data.skuInfo,data.itemInfo);
    });
    getRecommend().then(res => {
@@ -188,7 +188,6 @@ export default {
           this.$refs.nav.countindex  = this.countindex;
         }  
       }
-     
     }
   }
 }

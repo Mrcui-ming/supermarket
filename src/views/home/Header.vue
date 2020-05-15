@@ -162,6 +162,8 @@ export default {
 <style scoped>
 .navbar {
   background-color: #ff8198;
+  color: #fff;
+  font-size: 18px;
 }
 .navbar .center {
   text-align: center;

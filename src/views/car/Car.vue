@@ -73,7 +73,7 @@ export default {
 }
 .car-navbar .car-navbar-ele {
   text-align: center;
-  font-size: 20px;
+  font-size: 18px;
   color: #fff;
 }
 .car-bscroll {

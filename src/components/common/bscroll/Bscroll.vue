@@ -1,6 +1,6 @@
 <template>
   <div class="wrapper" ref="wrapper">
-    <div class="content">
+    <div class="content clearfix">
       <slot></slot>
     </div>
   </div>
@@ -29,7 +29,7 @@ data(){
 },
 methods:{
   //可以用这个方法来做下来刷新。2s内不可重复刷新
-  finishPullUp(){
+  finishPullUp(){                                                            
     this.bscroll && this.bscroll.finishPullUp();
   },
   //对bscroll.scrollHeight做一次刷新。因为默认可滑动区域是没有合计图片的高度.
@@ -70,4 +70,8 @@ mounted(){
 </script>
 
 <style>
+.wrapper,
+.content{
+  width: 100%;
+}
 </style>

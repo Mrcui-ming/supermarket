@@ -32,7 +32,7 @@ export default {
 }
 .user-navbar-ele {
   text-align: center;
-  font-size: 20px;
+  font-size: 18px;
   color: #fff;
 }
 </style>

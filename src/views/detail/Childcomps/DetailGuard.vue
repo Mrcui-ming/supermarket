@@ -155,7 +155,7 @@ export default {
   line-height: 30px;
   background-color: #eeeeee;
   text-align: center;
-   border-radius: 5px;
+  border-radius: 5px;
   border: 1px solid #eeee;
   margin-right: 10px;
   margin-bottom: 5px;

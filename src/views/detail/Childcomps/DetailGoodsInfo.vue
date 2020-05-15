@@ -34,7 +34,6 @@ export default {
   },
   methods:{
     goodsImgsLoad(){
-      //每次img加载完countimgs++，当countimgs的个数===需要加载图片的个数，传递信息。
         this.$emit('goodsImgsLoad');
     }
   }
